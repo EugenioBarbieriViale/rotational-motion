@@ -9,29 +9,17 @@ X,Y = 1000,1000
 screen = pygame.display.set_mode([X,Y])
 pygame.display.set_caption("Angular momentum")
 
-
-def grid(n, x, ys, X, Y, vel):
-    dist = X/n
-
-    for i in range(n):
-        for j in range(n):
-            ys[j] += vel
-
-        # Vertical lines
-        x += dist
-        pygame.draw.line(screen, (0,0,0), (x,0), (x,Y), 2)
-
-        # Horizontal lines
-        pygame.draw.line(screen, (0,0,0), (0,ys[i]), (X,ys[i]), 2)
-
-n = 20
-ys = [(X/n)*k for k in range(n)]
+# Grid propeties
+x = 0
+y = Y
+dist_grid = 40
+vel_grid = 1
 
 # Ratio of mass of the rod and mass of the bullet
-beta = 5
+beta = 1
 
 # Half of the length of the rod
-R = 300
+R = 230
 
 # Position of the center of mass of the system
 x_cm = (R)/(beta+1)
@@ -42,7 +30,7 @@ a2 = np.pi
 
 # Coordinates of the cm with respect to the top left
 x0 = X//2 + x_cm
-y0 = Y//2 + 200
+y0 = Y//2
 
 # Distances of the extremes from the cm
 l1 = R + x_cm
@@ -63,7 +51,6 @@ vel = 2
 v_cm = (vel)/(beta+1) # velocity of the center of mass
 va = 6*vel/(2*R*(beta+4)) # angular velocity
 
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -72,34 +59,28 @@ while True:
 
     screen.fill((200,200,200))
 
-    # if pos.y <= y0 + np.sin(a1)*d and pos.x > x0 - np.cos(a1)*d-10:
-    # if pos.y <= y0 + np.sin(a1)*d:
     if a2 < 6.3:
-        if pos.y <= y0: 
+        if pos.y <= y0:
+            y += v_cm
 
             a1 += va
             a2 += va
 
             pos.x = x0 - np.cos(a2)*(d-x_cm)
             pos.y = y0 + np.sin(a2)*(d-x_cm)
-
-            y0 -= v_cm
-            cm.y -= v_cm
 
         else:
             pos.y -= vel
 
     if a2 > 6.3:
-        if pos.y >= y0: 
+        if pos.y >= y0:
+            y += v_cm
 
             a1 += va
             a2 += va
 
             pos.x = x0 - np.cos(a2)*(d-x_cm)
             pos.y = y0 + np.sin(a2)*(d-x_cm)
-
-            y0 -= v_cm
-            cm.y -= v_cm
 
         else:
             pos.y -= vel
@@ -111,18 +92,21 @@ while True:
     p2.y = cm.y + np.sin(a2)*l2
 
     # Draw grid
-    grid(n, 0, ys, X, Y, 0)
+    for i in range(100):
+        pygame.draw.line(screen, (0,0,0), (x+dist_grid*i,0), (x+dist_grid*i,Y), 2)
+        if y > dist_grid:
+            pygame.draw.line(screen, (0,0,0), (0,y-dist_grid*i), (X, y-dist_grid*i), 2)
 
     # Rod
     pygame.draw.line(screen, (255,0,255), cm, p1, 8)
     pygame.draw.line(screen, (0,255,255), cm, p2, 8)
 
-    # Projectile
+    # Bullet
     pygame.draw.circle(screen, (255,0,0), pos, 6)
 
     font = pygame.font.SysFont("Comic Sans MS", 35)
     write1 = font.render("Angular velocity: " + str(round(va*100,4)) + " rad/s", 1, (255,255,255))
-    write2 = font.render("Velocity of the center of mass: " + str(round(v_cm*10,2)) + " m/s", 1, (255,255,255))
+    write2 = font.render("Velocity of the center of mass: " + str(round(v_cm,2)) + " m/s", 1, (255,255,255))
 
     screen.blit(write1, (10,10))
     screen.blit(write2, (10,30))
