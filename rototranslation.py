@@ -7,7 +7,7 @@ clock = pygame.time.Clock()
 X,Y = 1000,1000
 
 screen = pygame.display.set_mode([X,Y])
-pygame.display.set_caption("Angular momentum")
+pygame.display.set_caption("Rotating rod")
 
 # Grid propeties
 x = 0
@@ -41,7 +41,7 @@ cm = pygame.math.Vector2(x0, y0)
 p1 = pygame.math.Vector2(0,0)
 p2 = pygame.math.Vector2(0,0)
 
-dist_input = 250 # from the middle of the rod
+dist_input = 300 # from the middle of the rod
 d = dist_input - x_cm
 
 # Initial position and velocity of the bullet
@@ -59,8 +59,11 @@ while True:
 
     screen.fill((200,200,200))
 
-    if a2 < 6.3:
-        if pos.y <= y0:
+    cos_norm = abs(np.cos(a1))/np.cos(a1)
+    borderX = x0 + np.cos(a1)*(d+10)*cos_norm
+
+    if np.sin(a1) >= 0:
+        if pos.y <= y0 and pos.x <= borderX:
             y += v_cm
 
             a1 += va
@@ -72,8 +75,8 @@ while True:
         else:
             pos.y -= vel
 
-    if a2 > 6.3:
-        if pos.y >= y0:
+    if np.sin(a1) < 0:
+        if pos.y > y0 and pos.x <= borderX:
             y += v_cm
 
             a1 += va
