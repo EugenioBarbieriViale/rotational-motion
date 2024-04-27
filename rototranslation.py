@@ -47,7 +47,7 @@ pos = pygame.math.Vector2(X//2 + d-6, y0 + 200)
 vel = 2
 
 v_cm = (vel)/(beta+1) # velocity of the center of mass
-va = 6*vel/(2*R*(beta+4)) # angular velocity
+va = 3*vel/(R*(beta+4)) # angular velocity
 
 while True:
     for event in pygame.event.get():
