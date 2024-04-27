@@ -98,7 +98,7 @@ while True:
         pygame.draw.line(screen, (0,0,0), (x+dist_grid*i,0), (x+dist_grid*i,Y), 2)
         if y > dist_grid:
             write = yax.render(str(dist_grid*i), 1, (255,255,255))
-            screen.blit(write, (X//2-10,y-dist_grid*i-Y//2))
+            screen.blit(write, (X//2+3,y-dist_grid*i-Y//2))
             pygame.draw.line(screen, (0,0,0), (0,y-dist_grid*i), (X, y-dist_grid*i), 2)
 
     pygame.draw.line(screen, (255,0,0), (X//2,0), (X//2,Y), 2)
