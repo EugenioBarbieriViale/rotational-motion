@@ -13,7 +13,6 @@ pygame.display.set_caption("Rotating rod")
 x = 0
 y = Y
 dist_grid = 25
-vel_grid = 1
 
 # Ratio of mass of the rod and mass of the bullet
 beta = 1
