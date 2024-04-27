@@ -12,7 +12,7 @@ pygame.display.set_caption("Rotating rod")
 # Grid propeties
 x = 0
 y = Y
-dist_grid = 40
+dist_grid = 25
 vel_grid = 1
 
 # Ratio of mass of the rod and mass of the bullet
@@ -41,8 +41,7 @@ cm = pygame.math.Vector2(x0, y0)
 p1 = pygame.math.Vector2(0,0)
 p2 = pygame.math.Vector2(0,0)
 
-dist_input = 300 # from the middle of the rod
-d = dist_input - x_cm
+d = R
 
 # Initial position and velocity of the bullet
 pos = pygame.math.Vector2(X//2 + d-6, y0 + 200)
@@ -95,10 +94,16 @@ while True:
     p2.y = cm.y + np.sin(a2)*l2
 
     # Draw grid
-    for i in range(100):
+    yax = pygame.font.SysFont("Comic Sans MS", 20)
+    for i in range(200):
         pygame.draw.line(screen, (0,0,0), (x+dist_grid*i,0), (x+dist_grid*i,Y), 2)
         if y > dist_grid:
+            write = yax.render(str(dist_grid*i), 1, (255,255,255))
+            screen.blit(write, (X//2-10,y-dist_grid*i-Y//2))
             pygame.draw.line(screen, (0,0,0), (0,y-dist_grid*i), (X, y-dist_grid*i), 2)
+
+    pygame.draw.line(screen, (255,0,0), (X//2,0), (X//2,Y), 2)
+    pygame.draw.line(screen, (255,0,0), (0,y-Y//2), (X,y-Y//2), 2)
 
     # Rod
     pygame.draw.line(screen, (255,0,255), cm, p1, 8)
